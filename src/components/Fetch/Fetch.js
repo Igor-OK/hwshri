@@ -15,7 +15,7 @@ export class Fetch extends React.Component {
         super(props);
         // this.fetchData = this.fetchData.bind(this);
         // this.fetchNext = this.fetchNext.bind(this);
-        //  this.updateDimensions = this.updateDimensions.bind(this);
+        // this.updateDimensions = this.updateDimensions.bind(this);
     }
 
     componentDidMount() {
@@ -35,7 +35,7 @@ export class Fetch extends React.Component {
         let response = await fetch('../data.json');
         // });
         let json = await response.json();
-        // json.data.result.items.map(item=>item.top = 1);
+        json.data.result.items.map(item=>item.top = 1);
         this.setState({
             cards: this.state.cards.concat(json.data.result.items),
             loading: false
