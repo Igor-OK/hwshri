@@ -38,18 +38,58 @@ export class Columns extends React.Component {
             width = win.innerWidth || documentElement.clientWidth || body.clientWidth,
             height = win.innerHeight|| documentElement.clientHeight|| body.clientHeight,
             cols,
-            colWidth;
-        let array = this.props.Items.slice(); // тут нужно глубоко скопировать
+            colWidth,
+            verticalCoords;
+
+            let array = this.props.Items;
+
+        // let array = clone(this.props.Items); // тут нужно глубоко скопировать!!!! (нужно еще одно измерение! смотри вступительное)
+
+        // function clone(obj) {
+        //     let copy;
+        //     // Handle Array
+        //     if (obj instanceof Array) {
+        //         copy = [];
+        //         for (var i = 0, len = obj.length; i < len; i++) {
+        //             copy[i] = clone(obj[i]);
+        //         }
+        //         return copy;
+        //     }
+        //     // Handle Object
+        //     if (obj instanceof Object) {
+        //         copy = {};
+        //         for (var attr in obj) {
+        //             if (obj.hasOwnProperty(attr)) copy[attr] = clone(obj[attr]);
+        //         }
+        //         return copy;
+        //     };
+        // }
 
         // var oldArray = ["a", "b", "c"];
         // var newArray = oldArray.slice();
 
-        if (width >= 1300) cols = 4;
-        if (width < 1300 && width >= 950) cols = 3;
-        if (width < 950 && width >= 640) cols = 2;
-        if (width < 640 ) cols = 1;
+        if (width >= 1300){
+            cols = 4;
+            verticalCoords=[0, 0, 0, 0];
+        } 
+        if (width < 1300 && width >= 950){
+            cols = 3;
+            verticalCoords=[0, 0, 0];
+        } 
+        if (width < 950 && width >= 640){
+            cols = 2;
+            verticalCoords=[0, 0];
+        } 
+        if (width < 640 ){
+            cols = 1;
+            verticalCoords=[0];
+            console.log('portrait');
+        } 
+        //как быть с портретной ориентацией?
         colWidth = Math.round(width/cols);
-        let verticalCoords = [0,0,0,0]; // формируем массив исходя из количества cols    !
+        
+
+
 
         for( let i=0; i< array.length; i++){
             let th = array[i].thumb_height;

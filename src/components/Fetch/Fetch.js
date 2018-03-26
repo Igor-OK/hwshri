@@ -16,6 +16,7 @@ export class Fetch extends React.Component {
         // this.fetchData = this.fetchData.bind(this);
         // this.fetchNext = this.fetchNext.bind(this);
         // this.updateDimensions = this.updateDimensions.bind(this);
+      
     }
 
     componentDidMount() {
