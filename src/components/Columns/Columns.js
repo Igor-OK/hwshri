@@ -41,32 +41,25 @@ export class Columns extends React.Component {
             colWidth,
             verticalCoords;
 
-            let array = this.props.Items;
+// Дабы не изменять первоначальный массив данных добавлением в него новых полей, создадим клон и дальше будем работать с ним
+// А вообще, изменение ли это, когда все остается без изменений, но добавляются новые ключ-значения?(вдумчиво смотрю вдаль)
+        function DeepCopy (H){
+            if(Array.isArray(H)){
+                var mas = [];
+                for (var i=0; i<H.length; i++)
+                    mas[i]=DeepCopy (H[i]);
+                return mas;
+            }
+            if((typeof H) === 'object'){
+                var Hnew={};
+                for (var k in H)
+                    Hnew[k]=DeepCopy(H[k]);     
+                return Hnew;
+            }
+            return H;
+        };    
+        let array = DeepCopy(this.props.Items);
 
-        // let array = clone(this.props.Items); // тут нужно глубоко скопировать!!!! (нужно еще одно измерение! смотри вступительное)
-
-        // function clone(obj) {
-        //     let copy;
-        //     // Handle Array
-        //     if (obj instanceof Array) {
-        //         copy = [];
-        //         for (var i = 0, len = obj.length; i < len; i++) {
-        //             copy[i] = clone(obj[i]);
-        //         }
-        //         return copy;
-        //     }
-        //     // Handle Object
-        //     if (obj instanceof Object) {
-        //         copy = {};
-        //         for (var attr in obj) {
-        //             if (obj.hasOwnProperty(attr)) copy[attr] = clone(obj[attr]);
-        //         }
-        //         return copy;
-        //     };
-        // }
-
-        // var oldArray = ["a", "b", "c"];
-        // var newArray = oldArray.slice();
 
         if (width >= 1300){
             cols = 4;
@@ -115,12 +108,11 @@ export class Columns extends React.Component {
 
     render() {
         let width = this.state.columnWidth;
-        // console.log(width);
 
         return (
             <div className="grid">
             {
-                this.props.Items.map(card=>
+                this.state.newArray.map(card=>
                 <div  key={card._id} >
                     <img                        
                         src={card.thumbnail} 

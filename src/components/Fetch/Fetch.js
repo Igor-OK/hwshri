@@ -15,8 +15,7 @@ export class Fetch extends React.Component {
         super(props);
         // this.fetchData = this.fetchData.bind(this);
         // this.fetchNext = this.fetchNext.bind(this);
-        // this.updateDimensions = this.updateDimensions.bind(this);
-      
+        // this.updateDimensions = this.updateDimensions.bind(this); 
     }
 
     componentDidMount() {
@@ -69,6 +68,5 @@ export class Fetch extends React.Component {
                 <Columns Items={this.state.cards}/>
         );
     }
-
-
+ 
 }
