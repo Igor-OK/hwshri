@@ -13,8 +13,7 @@ export class Fetch extends React.Component {
 
     constructor(props) {
         super(props);
-        // this.fetchData = this.fetchData.bind(this);
-        // this.fetchNext = this.fetchNext.bind(this);
+
         // this.updateDimensions = this.updateDimensions.bind(this); 
     }
 
@@ -27,9 +26,8 @@ export class Fetch extends React.Component {
                 });
             });
     }
-
     
-    async fetchData(){
+    async fetchData(){ 
         // let response = await fetch('https://cors-anywhere.herokuapp.com/https://api.qwant.com/api/search/images?count=100&offset=1&q=cars', {
         //     method: 'GET'
         let response = await fetch('../data.json');
@@ -68,5 +66,6 @@ export class Fetch extends React.Component {
                 <Columns Items={this.state.cards}/>
         );
     }
- 
+
 }
+

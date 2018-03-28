@@ -11,12 +11,10 @@ export class Columns extends React.Component {
         columnWidth: 0
     };
 
-
     constructor(props) {
         super(props);
         this.updateDimensions = this.updateDimensions.bind(this);
     }
-
 
     componentWillMount() {
         this.updateDimensions();
@@ -41,8 +39,8 @@ export class Columns extends React.Component {
             colWidth,
             verticalCoords;
 
-// Дабы не изменять первоначальный массив данных добавлением в него новых полей, создадим клон и дальше будем работать с ним
-// А вообще, изменение ли это, когда все остается без изменений, но добавляются новые ключ-значения?(вдумчиво смотрю вдаль)
+        // Дабы не изменять первоначальный массив данных добавлением в него новых полей, создадим клон и дальше будем работать с ним
+        // А вообще, изменение ли это, когда все остается без изменений, но добавляются новые ключ-значения?(вдумчиво смотрю вдаль)
         function DeepCopy (H){
             if(Array.isArray(H)){
                 var mas = [];
@@ -60,7 +58,7 @@ export class Columns extends React.Component {
         };    
         let array = DeepCopy(this.props.Items);
 
-
+        //Определяем размеры-ориентацию устройства
         if (width >= 1300){
             cols = 4;
             verticalCoords=[0, 0, 0, 0];
@@ -73,36 +71,64 @@ export class Columns extends React.Component {
             cols = 2;
             verticalCoords=[0, 0];
         } 
-        if (width < 640 ){
+        if (width < 640){
             cols = 1;
             verticalCoords=[0];
-            console.log('portrait');
         } 
-        //как быть с портретной ориентацией?
-        colWidth = Math.round(width/cols);
-        
-
-
-
-        for( let i=0; i< array.length; i++){
-            let th = array[i].thumb_height;
-            let tw = array[i].thumb_width;
-            let page_height = th*colWidth/tw; // фактическая высота блока на странице
-            array[i].page_height = Math.ceil(page_height);// текущая высота элемента
-
-            let number = verticalCoords.indexOf(Math.min.apply(Math, verticalCoords)) ; //определяем номер колонки с самой короткой колонкой
-            array[i].page_top =  Math.ceil(verticalCoords[number]); //задаем абсолютные координаты элемента
-            array[i].page_left = number*colWidth;
-
-            verticalCoords[number] += array[i].page_height; //добавляем туда текущую высоту
-
-            console.log(verticalCoords);
-
+        if ( (height< 480) && (/Android|webOS|iPhone|iPod|BlackBerry|BB|IEMobile|Windows Phone|Opera Mini/i.test(navigator.userAgent)) ) {
+            console.warn('mobile');
+            cols = -1;
+            verticalCoords=[0];
         }
-        console.log(array);
+        //ширина колонки если не landscape
+        colWidth = Math.round(width/cols); 
 
-        this.setState({width: width, height: height, columns: cols, columnWidth: colWidth, newArray: array});
+        // считаем всю геометрию для всех сеток
+        if (cols > 0 ){
+            for( let i=0; i<array.length; i++){
+                //Вычисляем высоту и ширину компонента с картинкой при нашей ширине колонке
+                let th = array[i].thumb_height;
+                let tw = array[i].thumb_width;
+                array[i].elem_height = Math.ceil(th * colWidth/tw);
+                array[i].elem_width = colWidth; 
 
+                //Очень хочется, чтобы порядок расположения картинок соответствовал координатам top
+                //(чем раньше картинка в массиве, тем выше она на странице, или левее)
+                //посему определяем номер самой короткой колонки
+                let number = verticalCoords.indexOf(Math.min.apply(Math, verticalCoords)) ; 
+
+                //получаем абсолютные координаты элемента
+                array[i].elem_top =  verticalCoords[number]; //задаем абсолютные координаты элемента
+                array[i].elem_left = number * colWidth;
+
+                //добавляем высоту элемента к нашим высотам (обновляем меньшую длину сформированных колонок макета)
+                verticalCoords[number] += array[i].elem_height; 
+            }
+            this.setState({width: width, height: height, columns: cols, columnWidth: colWidth, newArray: array});
+            console.log(array);
+        }
+
+        // считаем геометрию для landscape
+        if (cols < 0 ){
+            //Переменная для определения координат left элементов с картинкой
+            let horisontalCoords = 0;
+
+            for(let i=0; i<array.length; i++){
+                // определяем размеры компонента-картинки
+                let th = array[i].thumb_height;
+                let tw = array[i].thumb_width;
+                array[i].elem_width = Math.ceil(tw * height / th);
+                array[i].elem_height = height;
+
+                // абсолютные координаты элемента
+                array[i].elem_top = 0;
+                array[i].elem_left = horisontalCoords;
+
+                //обновляем горизонтальную координату для следующего элемента
+                horisontalCoords += array[i].elem_width;
+            }
+            this.setState({width: width, height: height, columns: cols, newArray: array});
+        }
     }
 
 
@@ -118,9 +144,9 @@ export class Columns extends React.Component {
                         src={card.thumbnail} 
                         style={{
                             position: 'absolute',
-                            width: width +'px',
-                            top: card.page_top +'px',
-                            left: card.page_left +'px'
+                            width: card.elem_width +'px',
+                            top: card.elem_top +'px',
+                            left: card.elem_left +'px'
                             }}
                     />
                 </div>    
@@ -129,10 +155,7 @@ export class Columns extends React.Component {
             </div>
         );
 
-        // return (
-        //     <Grid Items={this.props.Items} Cols={this.state.columns} ColWidth={this.state.columnWidth} />
-        // );
-
+        
     }
 
 
