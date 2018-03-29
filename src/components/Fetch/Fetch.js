@@ -9,16 +9,17 @@ export class Fetch extends React.Component {
     state = {
         loading: true,
         cards: [],
+        step: 1
     };
 
     constructor(props) {
         super(props);
 
-        // this.updateDimensions = this.updateDimensions.bind(this); 
+        this.fetchMore = this.fetchMore.bind(this); 
     }
 
     componentDidMount() {
-        this.fetchData()
+        this.fetchMore()
             .catch((error) => {
                 this.setState({
                     loading: false,
@@ -26,21 +27,21 @@ export class Fetch extends React.Component {
                 });
             });
     }
-    
-    async fetchData(){ 
-        // let response = await fetch('https://cors-anywhere.herokuapp.com/https://api.qwant.com/api/search/images?count=100&offset=1&q=cars', {
-        //     method: 'GET'
-        let response = await fetch('../data.json');
-        // });
-        let json = await response.json();
-        json.data.result.items.map(item=>item.top = 1);
-        this.setState({
-            cards: this.state.cards.concat(json.data.result.items),
-            loading: false
-            });
-        console.log(this.state.cards);  
-    }
 
+    async fetchMore(){
+        let num = this.state.step;
+        let param = '../data' + num + '.json';
+        let response = await fetch(param);
+        let json = await response.json();
+        let jsonClean = json && json.data && json.data.result && json.data.result.items;
+        num++;
+        if (num === 6) num = 1; // пока зациклю на мои 5 json файлов
+        this.setState({
+            cards: this.state.cards.concat(jsonClean),
+            loading: false,
+            step: num
+            });
+    }
 
     render() {
         if (this.state.loading) {
@@ -63,7 +64,10 @@ export class Fetch extends React.Component {
         }
 
         return (
-                <Columns Items={this.state.cards}/>
+                <Columns 
+                    Items={this.state.cards}
+                    FetchMore={this.fetchMore}
+                />
         );
     }
 
