@@ -1,35 +1,82 @@
-.App {
-  text-align: center;
-}
 
+/* 
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
   height: 80px;
 }
 
-.App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
-  color: white;
-}
-
-.App-title {
-  font-size: 1.5em;
-}
-
-.App-intro {
-  font-size: large;
-}
-
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
+} */
+
+.card__image{
+  cursor: pointer;
+}
+
+.dashboard{
+  display: block;
+  position: fixed;
+  left: 5vw;
+  top: 5vh;
+  width: 90vw;
+  height: 90vh;
+}
+
+.dashboard__closebtn{
+  display: block;
+  position: fixed;
+  height: 20px;
+  width: 20px;
+  background-color: red;
+  left: 80vw;
+  top: 10vh;
+  z-index: 200;
+  cursor: pointer;
+}
+
+.dashboard__nextbtn{
+  display: block;
+  position: fixed;
+  height: 80vh;
+  width: 15vw;
+  background-color: #00FF4F;
+  left: 85vw;
+  top: 10vh;
+  z-index: 200;
+  cursor: pointer;
+}
+
+.dashboard__previousbtn{
+  display: block;
+  position: fixed;
+  height: 80vh;
+  width: 15vw;
+  background-color: #00FF4F;
+  left: 0;
+  top: 10vh;
+  z-index: 200;
+  cursor: pointer;
+}
+
+.hidden{
+  display: none;
+}
+
+.image{
+  display: flex;
+  justify-content: center;
+  vertical-align: center;
+  width:100%;
+  height: 100%;
+  background-color: gray;
+  z-index: 100;
 }
 
 .image__image{
   width: 100%;
   height: 100%;
+  border-radius: 5px;
 }
 
 .spinner{

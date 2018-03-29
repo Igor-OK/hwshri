@@ -26,8 +26,8 @@ export class Fetch extends React.Component {
                     error
                 });
             });
-    }
-
+    }  
+ 
     async fetchMore(){
         let num = this.state.step;
         let param = '../data' + num + '.json';

@@ -45,7 +45,7 @@ export class Columns extends React.Component {
             verticalCoords,
             number,
             horisontalCoords = 0;
-console.log('width-', width, '  height-', height);
+
 // Сейчас я вычислю размеры и координаты для всех элементов с картинками и передам их дальше
 // Дабы не изменять первоначальный массив данных добавлением в него новых полей, создадим клон и дальше будем работать с ним
 // А вообще, изменение ли это, когда все остается без изменений, но добавляются новые ключ-значения?(вдумчиво смотрю вдаль)
@@ -66,7 +66,7 @@ console.log('width-', width, '  height-', height);
         };    
         let array = DeepCopy(this.props.Items);
         
-        Определяем размеры-ориентацию устройства
+        //Определяем размеры-ориентацию устройства
         if (width >= 1300){
             cols = 4;
             verticalCoords=[0, 0, 0, 0];
@@ -87,7 +87,6 @@ console.log('width-', width, '  height-', height);
             console.warn('mobile');
             cols = -1;
             verticalCoords=[0];
-            console.log('gogogo');
         }
         //ширина колонки если не landscape
         colWidth = Math.round(width/cols); 
@@ -100,6 +99,7 @@ console.log('width-', width, '  height-', height);
                 let tw = array[i].thumb_width;
                 array[i].elem_height = Math.ceil(th * colWidth/tw);
                 array[i].elem_width = colWidth; 
+                array[i].number = i;
                 //Очень хочется, чтобы порядок расположения картинок соответствовал координатам top
                 //(чем раньше картинка в массиве, тем выше она на странице, или левее)
                 //посему определяем номер самой короткой колонки
