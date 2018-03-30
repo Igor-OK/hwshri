@@ -3,9 +3,6 @@ import * as React from 'react';
 import {Scroll} from '../Scroll/Scroll';
 import {Card} from '../Card/Card';
 import {Dashboard} from '../Dashboard/Dashboard';
-import {Button} from '../Button/Button';
-
-
 
 
 export class Grid extends React.Component {
@@ -23,49 +20,38 @@ export class Grid extends React.Component {
         this.nextImage = this.nextImage.bind(this); 
         this.previousImage = this.previousImage.bind(this); 
     }
-// export function Grid ({Items, Cols, Coordinate, FetchMore}){
-
-    // componentWillReceiveProps(){
-    //     for (let i=0; this.props.Item.length; i++){
-    //         justNumbersAndSrc[]
-    //     }
-    // }
 
     imageClick(param, e){
-        console.log('hihihihihihihi', param);
+        console.log(param);
         console.log(e.target);
-        this.setState({open: true});
+        this.setState({open: true,
+                       current: param});
     }
 
     closeIt(){
-        console.log('close')
         this.setState({open: false});
     }
 
     nextImage(){
-        console.log('next')
         let now = this.state.current;
         if (now === this.props.Items.length){
-            console.log('FETCH IT !!!') //--------------------------не забудь тут вызывать и может вообще их поглубже засунуть??
+            console.log('FETCH IT !!!') //-----не забудь тут вызывать и может вообще их поглубже засунуть??
         }
-        this.setState({current:now++})
+        this.setState({current:++now})
     }
 
     previousImage(){
-        console.log('Image')
         let now = this.state.current;
         if (now === 0){
             now = this.props.Items.length;
         }
-        this.setState({current:now++})
+        this.setState({current:--now});
     }
 
     render(){
             if(!this.props.Items){
                 return null
             }
-
-            console.log(this.props.Items);
 
             return(  
                 <Scroll 
@@ -76,8 +62,9 @@ export class Grid extends React.Component {
                     {
                         this.props.Items.map(card=>
                             <Card 
+                                key={card._id}
                                 Item={card} 
-                                OnClick={this.imageClick.bind(this, card.number)}/>
+                                OnClick={this.imageClick.bind(this, card.num)}/>
                         ) 
                     }
 
@@ -86,12 +73,11 @@ export class Grid extends React.Component {
                         Opened={this.state.open} 
                         Current={this.state.current} 
                         CloseIt={this.closeIt}
-                        Next={this.nextImage}
+                        Next={this.nextImage.bind(this)}
                         Previous={this.previousImage}
                     />
                 </Scroll>
         );
     }
-
 
 }

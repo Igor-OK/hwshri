@@ -34,7 +34,6 @@ export class Scroll extends React.Component {
         if (this.props.Cols > 0){
             let scrollTop = document.body.scrollTop || document.documentElement.scrollTop,
                 windowHeight = window.innerHeight;
-            console.log('up');
             if (scrollTop + windowHeight >= this.props.Coordinate) {
                 this.nextPage();
             }
@@ -43,7 +42,6 @@ export class Scroll extends React.Component {
         if (this.props.Cols < 0){
             let scrollLeft = document.body.scrollLeft || document.documentElement.scrollLeft,
                 windowWidth =  window.innerWidth;
-            console.log('right');
             if(scrollLeft + windowWidth >= this.props.Coordinate){
                 this.nextPage();
             }    

@@ -10,13 +10,11 @@ export function Card ({Item, OnClick}){
     return(
         <div 
             className="card__image"  
-            key={Item._id} 
             onClick = {OnClick}
             style={{
                 position: 'absolute',
                 width: Item.elem_width +'px',
-                top: Item.elem_top +'px',
-                left: Item.elem_left +'px'
+                transform: 'translate3d('+Item.elem_left + 'px, ' + Item.elem_top + 'px, 0px)'
             }}
             >
             <img className = "image__image"

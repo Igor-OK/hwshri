@@ -1,6 +1,9 @@
 import * as React from 'react';
 
- import {Grid} from '../Grid/Grid';
+import {Grid} from '../Grid/Grid';
+
+const scrollBarWidth = 16,
+      between = 20;
 
 export class Columns extends React.Component {
     state = {
@@ -44,6 +47,7 @@ export class Columns extends React.Component {
             colWidth,
             verticalCoords,
             number,
+            portraitMobileScroller = 1,
             horisontalCoords = 0;
 
 // Сейчас я вычислю размеры и координаты для всех элементов с картинками и передам их дальше
@@ -83,13 +87,16 @@ export class Columns extends React.Component {
             cols = 1;
             verticalCoords=[0];
         } 
-        if ( (height< 480) && (/Android|webOS|iPhone|iPod|BlackBerry|BB|IEMobile|Windows Phone|Opera Mini/i.test(navigator.userAgent)) ) {
-            console.warn('mobile');
+        if ( (height < 480) && (/Android|webOS|iPhone|iPod|BlackBerry|BB|IEMobile|Windows Phone|Opera Mini/i.test(navigator.userAgent)) ) {
             cols = -1;
             verticalCoords=[0];
         }
+        if ( (height >= 480) && (/Android|webOS|iPhone|iPod|BlackBerry|BB|IEMobile|Windows Phone|Opera Mini/i.test(navigator.userAgent)) ) {
+            portraitMobileScroller = 0; // делаю это, чтоб не учитывать ширину скрола на мобилке портретной
+        }
+
         //ширина колонки если не landscape
-        colWidth = Math.round(width/cols); 
+        colWidth = Math.ceil((width - scrollBarWidth * portraitMobileScroller - (cols + 1) * between) / cols);  
 
         // считаем всю геометрию для всех сеток
         if (cols > 0 ){
@@ -97,18 +104,18 @@ export class Columns extends React.Component {
                 //Вычисляем высоту и ширину компонента с картинкой при нашей ширине колонке
                 let th = array[i].thumb_height;
                 let tw = array[i].thumb_width;
-                array[i].elem_height = Math.ceil(th * colWidth/tw);
+                array[i].elem_height = Math.ceil(th * colWidth / tw);
                 array[i].elem_width = colWidth; 
-                array[i].number = i;
+                array[i].num = i;
                 //Очень хочется, чтобы порядок расположения картинок соответствовал координатам top
                 //(чем раньше картинка в массиве, тем выше она на странице, или левее)
                 //посему определяем номер самой короткой колонки
                 number = verticalCoords.indexOf(Math.min.apply(Math, verticalCoords)) ; 
                 //получаем абсолютные координаты элемента
-                array[i].elem_top =  verticalCoords[number]; //задаем абсолютные координаты элемента
-                array[i].elem_left = number * colWidth;
+                array[i].elem_top =  verticalCoords[number] + between; //задаем абсолютные координаты элемента
+                array[i].elem_left = between + number * (colWidth + between);
                 //добавляем высоту элемента к нашим высотам (обновляем меньшую длину сформированных колонок макета)
-                verticalCoords[number] += array[i].elem_height; 
+                verticalCoords[number] += array[i].elem_height + between; 
             }
             this.setState({
                 width: width, 
@@ -122,18 +129,18 @@ export class Columns extends React.Component {
 
         // считаем геометрию для landscape
         if (cols < 0 ){
-            console.log('string');
             for(let i=0; i<array.length; i++){
                 // определяем размеры компонента-картинки
                 let th = array[i].thumb_height;
                 let tw = array[i].thumb_width;
-                array[i].elem_width = Math.ceil(tw * height / th);
-                array[i].elem_height = height;
+                array[i].elem_width = Math.ceil(tw * (height - 2 * between) / th);
+                array[i].elem_height = height - 2 * between;
+                array[i].num = i;
                 // абсолютные координаты элемента
-                array[i].elem_top = 0;
-                array[i].elem_left = horisontalCoords;
-                //обновляем горизонтальную координату для следующего элемента
-                horisontalCoords += array[i].elem_width;
+                array[i].elem_top = between;
+                array[i].elem_left = horisontalCoords + between;
+                // обновляем горизонтальную координату для следующего элемента
+                horisontalCoords += array[i].elem_width + between;
             }
             this.setState({
                 width: width, 

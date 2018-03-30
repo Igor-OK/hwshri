@@ -14,15 +14,15 @@ if(!Items){
     return(  
         <div className={Opened? "dashboard":"hidden"}>
             <Button 
-                onClick={CloseIt}
+                ButtonHandler={CloseIt}
                 Class={"dashboard__closebtn"} 
             />
             <Button 
-                onClick={Next}
+                ButtonHandler={Next}
                 Class={"dashboard__nextbtn"} 
             />
             <Button 
-                onClick={Previous}
+                ButtonHandler={Previous}
                 Class={"dashboard__previousbtn"} 
             />   
             <Image 
