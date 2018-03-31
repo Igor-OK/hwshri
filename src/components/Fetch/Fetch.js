@@ -40,8 +40,8 @@ export class Fetch extends React.Component {
             cards: this.state.cards.concat(jsonClean),
             loading: false,
             step: num
-            });
-    }
+            });  
+    } 
 
     render() {
         if (this.state.loading) {

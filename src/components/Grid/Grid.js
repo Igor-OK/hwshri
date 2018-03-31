@@ -11,6 +11,7 @@ export class Grid extends React.Component {
         justNumbersAndSrc:[],
         open: false,
         current: 0,
+        loading: false
     };
     
     constructor(props) {
@@ -21,6 +22,20 @@ export class Grid extends React.Component {
         this.previousImage = this.previousImage.bind(this); 
     }
 
+    async nextPage(cur) {
+        this.setState({loading: true});
+
+        try {
+            await this.props.FetchMore();
+        } catch(err) {
+            console.error(err);
+        } finally {
+            this.setState({loading: false,
+                           current: 0 // ++cur - пока не работает 
+                          });
+        }
+    }
+
     imageClick(param, e){
         console.log(param);
         console.log(e.target);
@@ -28,16 +43,17 @@ export class Grid extends React.Component {
                        current: param});
     }
 
-    closeIt(){
+    closeIt(){//тут будет скролл на текущий элемент
         this.setState({open: false});
     }
 
-    nextImage(){
+    nextImage(){//тут будет подгрузка фечом, пока заглушка "все сначала"
         let now = this.state.current;
-        if (now === this.props.Items.length){
-            console.log('FETCH IT !!!') //-----не забудь тут вызывать и может вообще их поглубже засунуть??
+        if (now === this.props.Items.length-1){
+            this.nextPage(now);
+        } else {
+            this.setState({current:++now})
         }
-        this.setState({current:++now})
     }
 
     previousImage(){
@@ -76,6 +92,12 @@ export class Grid extends React.Component {
                         Next={this.nextImage.bind(this)}
                         Previous={this.previousImage}
                     />
+
+                    {this.state.loading && (
+                        <div className="spinner">
+                            загрузка...
+                        </div>
+                    )}
                 </Scroll>
         );
     }

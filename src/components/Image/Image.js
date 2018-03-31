@@ -6,8 +6,13 @@ if(!Src){
     return null
 }
     return(  
-        <div className="image">
-             <img src={Src} />
+        <div className="image"
+            >
+             <img 
+                className="image__image" 
+                src={Src}
+                alt=''
+            />
         </div>
     );
 }

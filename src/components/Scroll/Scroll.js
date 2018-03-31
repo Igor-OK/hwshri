@@ -23,12 +23,8 @@ export class Scroll extends React.Component {
         if (!this.props.Cols || this.state.loading) {
             return;
         }
-    let win = window,
-        doc = document,
-        documentElement = doc.documentElement,
-        body = doc.getElementsByTagName('body')[0],
-        width = win.innerWidth || documentElement.clientWidth || body.clientWidth,
-        height = win.innerHeight|| documentElement.clientHeight|| body.clientHeight;
+
+        
 
         //для обычной сетки
         if (this.props.Cols > 0){
@@ -68,7 +64,9 @@ export class Scroll extends React.Component {
                 {this.props.children}
 
                 {this.state.loading && (
-                        <div className="spinner"/>
+                        <div className="spinner">
+                            загрузка...
+                        </div>    
                 )}
             </div>
         );

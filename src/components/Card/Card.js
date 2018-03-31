@@ -9,7 +9,7 @@ export function Card ({Item, OnClick}){
 
     return(
         <div 
-            className="card__image"  
+            className="card"  
             onClick = {OnClick}
             style={{
                 position: 'absolute',
@@ -17,7 +17,7 @@ export function Card ({Item, OnClick}){
                 transform: 'translate3d('+Item.elem_left + 'px, ' + Item.elem_top + 'px, 0px)'
             }}
             >
-            <img className = "image__image"
+            <img className = "card__image"
                 alt={Item.title}                    
                 src={Item.media} 
             />              

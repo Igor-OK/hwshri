@@ -3,7 +3,7 @@ import * as React from 'react';
 import {Grid} from '../Grid/Grid';
 
 const scrollBarWidth = 16,
-      between = 20;
+      between = 25;
 
 export class Columns extends React.Component {
     state = {
@@ -69,6 +69,7 @@ export class Columns extends React.Component {
             return H;
         };    
         let array = DeepCopy(this.props.Items);
+        // let array = DeepCopy(this.props.Items);
         
         //Определяем размеры-ориентацию устройства
         if (width >= 1300){
