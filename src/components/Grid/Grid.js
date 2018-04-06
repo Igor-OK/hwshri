@@ -31,7 +31,7 @@ export class Grid extends React.Component {
             console.error(err);
         } finally {
             this.setState({loading: false,
-                           current: 0 // ++cur - пока не работает 
+                           current: ++cur
                           });
         }
     }
@@ -43,14 +43,17 @@ export class Grid extends React.Component {
                        current: param});
     }
 
-    closeIt(){//тут будет скролл на текущий элемент
+    closeIt(){//сделай, чтоб скукоживалось в карточкуили скролл анимируй
+        let numberId = this.props.Items[this.state.current].count.toString();
+        let elem = document.getElementById(numberId);
+        elem.scrollIntoView();
         this.setState({open: false});
     }
 
-    nextImage(){//тут будет подгрузка фечом, пока заглушка "все сначала"
+    nextImage(){
         let now = this.state.current;
         if (now === this.props.Items.length-1){
-            this.nextPage(now);
+            this.nextPage(now); // тут подтормаживает, пока не загрузилось
         } else {
             this.setState({current:++now})
         }
@@ -74,7 +77,6 @@ export class Grid extends React.Component {
                     Cols={this.props.Cols} 
                     Coordinate={this.props.Coordinate} 
                     FetchMore={this.props.FetchMore}>
-
                     {
                         this.props.Items.map(card=>
                             <Card 

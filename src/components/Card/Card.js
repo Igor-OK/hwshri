@@ -9,6 +9,7 @@ export function Card ({Item, OnClick}){
 
     return(
         <div 
+            id = {Item.count}
             className="card"  
             onClick = {OnClick}
             style={{

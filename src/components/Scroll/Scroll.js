@@ -24,21 +24,18 @@ export class Scroll extends React.Component {
             return;
         }
 
-        
-
+    
         //для обычной сетки
         if (this.props.Cols > 0){
-            let scrollTop = document.body.scrollTop || document.documentElement.scrollTop,
-                windowHeight = window.innerHeight;
-            if (scrollTop + windowHeight >= this.props.Coordinate) {
+            let scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
+            if (scrollTop + window.innerHeight >= this.props.Coordinate) {
                 this.nextPage();
             }
         }
         //для landscape
         if (this.props.Cols < 0){
-            let scrollLeft = document.body.scrollLeft || document.documentElement.scrollLeft,
-                windowWidth =  window.innerWidth;
-            if(scrollLeft + windowWidth >= this.props.Coordinate){
+            let scrollLeft = document.body.scrollLeft || document.documentElement.scrollLeft;
+            if(scrollLeft + window.innerWidth >= this.props.Coordinate){
                 this.nextPage();
             }    
         }
@@ -47,7 +44,6 @@ export class Scroll extends React.Component {
 
     async nextPage() {
         this.setState({loading: true});
-
         try {
             await this.props.FetchMore();
         } catch(err) {
@@ -60,7 +56,7 @@ export class Scroll extends React.Component {
 
     render() {
         return (
-            <div className="scroll" ref={(container) => this.container = container}>
+            <div className="scroll">
                 {this.props.children}
 
                 {this.state.loading && (

@@ -18,25 +18,30 @@ export class Columns extends React.Component {
     constructor(props) {
         super(props);
         this.updateDimensions = this.updateDimensions.bind(this);
+        this.updateDimensionsListener = this.updateDimensionsListener.bind(this);
     }
 
     componentWillMount() {
-        this.updateDimensions();
+        this.updateDimensions(this.props);
     }
 
     componentWillUnmount() {
-        window.removeEventListener("resize", this.updateDimensions);
+        window.removeEventListener("resize", this.updateDimensionsListener);
     }
 
     componentDidMount() {
-        window.addEventListener("resize", this.updateDimensions);
+        window.addEventListener("resize", this.updateDimensionsListener);
     }
 
-    componentWillReceiveProps(){
-        this.updateDimensions();
+    componentWillReceiveProps(nextProps){
+        this.updateDimensions(nextProps);
     }
 
-    updateDimensions(){
+    updateDimensionsListener() {
+        this.updateDimensions(this.props);
+    }
+
+    updateDimensions(props){
         let win = window,
             doc = document,
             documentElement = doc.documentElement,
@@ -68,8 +73,7 @@ export class Columns extends React.Component {
             }
             return H;
         };    
-        let array = DeepCopy(this.props.Items);
-        // let array = DeepCopy(this.props.Items);
+        let array = DeepCopy(props.Items);
         
         //Определяем размеры-ориентацию устройства
         if (width >= 1300){

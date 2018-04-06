@@ -42,15 +42,12 @@ export class Fetch extends React.Component {
             step: num
             });  
     } 
-
+    
     render() {
         if (this.state.loading) {
             return (
                 <div className="spiner">
-                    {this.state.cards.map( card =>
-                        <h3> {card.height} </h3>
-                    )}
-                    <div className="size"/>
+                   загрузка...
                 </div>
             );
         }
