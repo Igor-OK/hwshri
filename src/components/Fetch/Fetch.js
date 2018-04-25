@@ -30,7 +30,7 @@ export class Fetch extends React.Component {
  
     async fetchMore(){
         let num = this.state.step;
-        let param = '/data' + num + '.json';
+        let param = '/hwshri/data' + num + '.json';
         let response = await fetch(param);
         let json = await response.json();
         let jsonClean = json && json.data && json.data.result && json.data.result.items;
