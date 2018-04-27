@@ -1,26 +1,9 @@
-sudo: false;
-language: node.js;
-
+language: node_js
 node_js:
-  -'node'
-  - 9
-
+  - "stable"
+cache:
+  directories:
+  - node_modules #Cache node_modules for faster builds
 script:
-  -yarn lint
-  -yarn test
-  -yarn build
-
-# before_deploy:
-#   - yarn build
-#   - echo "Initializing deployment..."
-#   - cd build
-# deploy:
-#   provider: pages
-#   skip-cleanup: true
-#   github-token: $GH_TOKEN
-#   keep-history: true
-#   local-dir: build
-#   on:
-#     branch: master
-# after_deploy:
-#   - echo "Deployment complete
+  - npm test #Runs Tests
+  - npm run build #Creats a production build
