@@ -28,9 +28,13 @@ export class Fetch extends React.Component {
             });
     }  
  
+//await fetch('https://cors-anywhere.herokuapp.com/https://api.qwant.com/api/search/images?count=100&offset=1&q=cats'
+
+
     async fetchMore(){
         let num = this.state.step;
-        let param = '/hwshri/data' + num + '.json';
+        // let param = '/hwshri/data' + num + '.json';
+        let param = 'https://api.qwant.com/api/search/images?count=100&offset=1&q=cats';        
         let response = await fetch(param);
         let json = await response.json();
         let jsonClean = json && json.data && json.data.result && json.data.result.items;
